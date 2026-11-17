@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lunar AI Film Festival</title>
+  <meta name="description" content="Lunar AI Film Festival，月光之下，让AI影像汇聚成新的电影浪潮。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #05070d;
+      --bg-blue: #0a1026;
+      --moon-silver: #e7ecff;
+      --silver-light: #f5f7ff;
+      --accent-red: #7a1428;
+      --accent-red-bright: #c81f3f;
+      --text-main: #f5f7ff;
+      --text-muted: #9aa3bf;
+      --card-bg: rgba(12, 18, 38, 0.55);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --shadow-glow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      --radius: 22px;
+      --transition: 0.4s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ===== Header / Navigation ===== */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      padding: 24px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(180deg, rgba(5, 7, 13, 0.72), rgba(5, 7, 13, 0));
+      transition: background var(--transition), padding var(--transition);
+    }
+
+    .site-header.scrolled {
+      background: rgba(5, 7, 13, 0.88);
+      backdrop-filter: blur(14px);
+      padding: 16px 40px;
+    }
+
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing: 0.12em;
+      color: var(--silver-light);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 34px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      position: relative;
+      padding-bottom: 6px;
+      transition: color var(--transition);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background: var(--moon-silver);
+      transition: width var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--silver-light);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--silver-light);
+      cursor: pointer;
+      transition: background var(--transition), border-color var(--transition), transform var(--transition);
+    }
+
+    .btn:hover {
+      background: rgba(200, 31, 63, 0.18);
+      border-color: rgba(200, 31, 63, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, rgba(200, 31, 63, 0.92), rgba(122, 20, 40, 0.92));
+      border-color: rgba(200, 31, 63, 0.5);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, rgba(200, 31, 63, 1), rgba(122, 20, 40, 1));
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    /* ===== Hero Section ===== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 80px 80px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background-image: url('lunar-ai-film-festival-home-bg.jpg');
+      background-size: cover;
+      background-position: center right;
+      background-repeat: no-repeat;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse at top left, rgba(10, 16, 38, 0.45), transparent 55%),
+        radial-gradient(ellipse at bottom right, rgba(122, 20, 40, 0.18), transparent 55%),
+        linear-gradient(180deg, rgba(5, 7, 13, 0.35), rgba(5, 7, 13, 0.72));
+    }
+
+    .hero-content {
+      max-width: 780px;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      display: inline-block;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(48px, 7vw, 96px);
+      line-height: 1.02;
+      letter-spacing: 0.04em;
+      color: var(--silver-light);
+      margin-bottom: 28px;
+      text-shadow: 0 10px 40px rgba(0, 0, 0, 0.55);
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--moon-silver);
+    }
+
+    .hero p {
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      max-width: 560px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .hero-meta {
+      margin-top: 60px;
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      min-width: 140px;
+    }
+
+    .meta-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .meta-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      color: var(--silver-light);
+    }
+
+    /* ===== Sections ===== */
+    .section {
+      padding: 120px 80px;
+      position: relative;
+    }
+
+    .section-dark {
+      background: radial-gradient(ellipse at top, rgba(10, 16, 38, 0.6), transparent 60%), var(--bg-deep);
+    }
+
+    .section-label {
+      font-size: 12px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      margin-bottom: 24px;
+      color: var(--silver-light);
+    }
+
+    .section-text {
+      max-width: 720px;
+      color: var(--text-muted);
+      font-size: 17px;
+      line-height: 1.8;
+    }
+
+    .grid {
+      display: grid;
+      gap: 28px;
+      margin-top: 60px;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      backdrop-filter: blur(14px);
+      transition: transform var(--transition), border-color var(--transition), background var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 255, 255, 0.22);
+      background: rgba(12, 18, 38, 0.72);
+    }
+
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(200, 31, 63, 0.22), rgba(10, 16, 38, 0.6));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      margin-bottom: 14px;
+      color: var(--silver-light);
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    /* ===== Films / Gallery ===== */
+    .film-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-top: 60px;
+    }
+
+    .film-card {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      border: 1px solid var(--card-border);
+      background: linear-gradient(180deg, rgba(10, 16, 38, 0.6), rgba(5, 7, 13, 0.9));
+      transition: transform var(--transition), border-color var(--transition);
+    }
+
+    .film-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .film-poster {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.85;
+      transition: opacity var(--transition), transform var(--transition);
+    }
+
+    .film-card:hover .film-poster {
+      opacity: 1;
+      transform: scale(1.04);
+    }
+
+    .film-info {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 28px 24px 22px;
+      background: linear-gradient(180deg, rgba(5, 7, 13, 0), rgba(5, 7, 13, 0.92));
+    }
+
+    .film-category {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .film-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--silver-light);
+      margin-bottom: 8px;
+    }
+
+    .film-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ===== Schedule / Timeline ===== */
+    .schedule {
+      margin-top: 60px;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .schedule-row {
+      display: grid;
+      grid-template-columns: 180px 1fr auto;
+      gap: 40px;
+      align-items: center;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--card-border);
+      transition: background var(--transition);
+    }
+
+    .schedule-row:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .schedule-time {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      color: var(--moon-silver);
+    }
+
+    .schedule-title {
+      font-size: 18px;
+      color: var(--silver-light);
+      margin-bottom: 6px;
+    }
+
+    .schedule-desc {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    /* ===== CTA Section ===== */
+    .cta-section {
+      text-align: center;
+      padding: 140px 80px;
+      background:
+        radial-gradient(ellipse at center, rgba(122, 20, 40, 0.22), transparent 60%),
+        linear-gradient(180deg, var(--bg-deep), rgba(10, 16, 38, 0.4));
+    }
+
+    .cta-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 5vw, 64px);
+      margin-bottom: 24px;
+      color: var(--silver-light);
+    }
+
+    .cta-section p {
+      max-width: 640px;
+      margin: 0 auto 40px;
+      color: var(--text-muted);
+      font-size: 17px;
+    }
+
+    /* ===== Footer ===== */
+    .site-footer {
+      padding: 60px 80px;
+      border-top: 1px solid var(--card-border);
+      background: rgba(5, 7, 13, 0.8);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-brand {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      color: var(--silver-light);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 14px;
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--silver-light);
+    }
+
+    .copyright {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 1100px) {
+      .grid-3,
+      .grid-4,
+      .film-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .schedule-row {
+        grid-template-columns: 140px 1fr auto;
+        gap: 24px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .site-header {
+        padding: 18px 24px;
+      }
+
+      .site-header.scrolled {
+        padding: 14px 24px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 120px 28px 60px;
+      }
+
+      .hero-meta {
+        gap: 24px;
+      }
+
+      .section {
+        padding: 80px 28px;
+      }
+
+      .grid-3,
+      .grid-4,
+      .film-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .schedule-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .cta-section {
+        padding: 100px 28px;
+      }
+
+      .site-footer {
+        padding: 40px 28px;
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header" id="siteHeader">
+    <div class="brand">LUNAR AI FILM FESTIVAL</div>
+    <ul class="nav-links">
+      <li><a href="#about">关于</a></li>
+      <li><a href="#program">展映</a></li>
+      <li><a href="#schedule">日程</a></li>
+      <li><a href="#submit">投稿</a></li>
+      <li><a href="#contact">联系</a></li>
+    </ul>
+    <a href="#submit" class="btn btn-primary">提交作品</a>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg" role="img" aria-label="Lunar AI Film Festival 背景"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="eyebrow">2026 · Shanghai · Open Call</span>
+      <h1>Lunar <em>AI</em> Film Festival</h1>
+      <p>月光之下，让 AI 影像汇聚成新的电影浪潮。我们邀请创作者、研究者与影像爱好者共同探索生成式电影的未来边界。</p>
+      <div class="hero-actions">
+        <a href="#program" class="btn btn-primary">浏览展映</a>
+        <a href="#submit" class="btn">提交作品</a>
+      </div>
+      <div class="hero-meta">
+        <div class="meta-item">
+          <div class="meta-label">Dates</div>
+          <div class="meta-value">12.24 — 12.28</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Venue</div>
+          <div class="meta-value">Shanghai</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Open Call</div>
+          <div class="meta-value">Now Open</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section section-dark" id="about">
+    <span class="section-label">About</span>
+    <h2 class="section-title">关于 Lunar AI Film Festival</h2>
+    <p class="section-text">
+      Lunar AI Film Festival 是一个聚焦人工智能影像创作的电影节。我们关注短片、实验影像、AI 辅助叙事、生成式镜头与人机协作电影作品，致力于为新兴影像语言提供展示、交流与评审平台。
+    </p>
+
+    <div class="grid grid-3">
+      <div class="card">
+        <div class="card-icon">🌙</div>
+        <h3>Moonlight Vision</h3>
+        <p>以月光作为视觉母题，连接诗意、未来感与夜间城市文化，为电影节建立统一的电影宇宙。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎬</div>
+        <h3>AI Cinema</h3>
+        <p>探索 AI 在分镜、视觉生成、声音设计与叙事编辑中的应用，推动电影生产方式的边界。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">✦</div>
+        <h3>Open Call</h3>
+        <p>面向全球创作者开放征集，接受 AI 短片、实验影像、动态海报与生成式电影项目报名。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Program -->
+  <section class="section" id="program">
+    <span class="section-label">Program</span>
+    <h2 class="section-title">展映单元</h2>
+    <p class="section-text">本届电影节分为四个竞赛与展映单元，涵盖 AI 短片、实验影像、生成式视觉与夜间主题电影。</p>
+
+    <div class="grid grid-4">
+      <div class="card">
+        <h3>Short Film Competition</h3>
+        <p>AI 短片竞赛单元，面向全球创作者征集 15 分钟以内的影像作品。</p>
+      </div>
+      <div class="card">
+        <h3>Experimental Showcase</h3>
+        <p>实验影像特别展，鼓励生成美学、非线性叙事与人机协作创作。</p>
+      </div>
+      <div class="card">
+        <h3>Midnight Moon</h3>
+        <p>午夜月光单元，展映具有梦境感、神秘氛围与夜间城市气质的作品。</p>
+      </div>
+      <div class="card">
+        <h3>Forum & Workshop</h3>
+        <p>行业论坛与工作坊，聚焦 AI 电影工具、制作流程与版权伦理议题。</p>
+      </div>
+    </div>
+
+    <div class="film-grid">
+      <div class="film-card">
+        <div class="film-poster" style="background-image: linear-gradient(135deg, #0a1026, #7a1428);"></div>
+        <div class="film-info">
+          <div class="film-category">Short Film Competition</div>
+          <div class="film-title">Moon Circuit</div>
+          <div class="film-meta">Dir. Atlas Chen · 12 min</div>
+        </div>
+      </div>
+      <div class="film-card">
+        <div class="film-poster" style="background-image: linear-gradient(135deg, #1b2447, #05070d);"></div>
+        <div class="film-info">
+          <div class="film-category">Experimental Showcase</div>
+          <div class="film-title">Neon Tides</div>
+          <div class="film-meta">Dir. Lina Park · 9 min</div>
+        </div>
+      </div>
+      <div class="film-card">
+        <div class="film-poster" style="background-image: linear-gradient(135deg, #2a0a1a, #0a1026);"></div>
+        <div class="film-info">
+          <div class="film-category">Midnight Moon</div>
+          <div class="film-title">The Last Broadcast</div>
+          <div class="film-meta">Dir. Kaito Mori · 14 min</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Schedule -->
+  <section class="section section-dark" id="schedule">
+    <span class="section-label">Schedule</span>
+    <h2 class="section-title">活动日程</h2>
+    <p class="section-text">电影节为期五天，包含开幕、竞赛展映、论坛、工作坊与颁奖夜。</p>
+
+    <div class="schedule">
+      <div class="schedule-row">
+        <div class="schedule-time">12.24</div>
+        <div>
+          <div class="schedule-title">开幕夜 · Opening Night</div>
+          <div class="schedule-desc">开幕影片放映 + 主创对谈 + 月光红毯仪式</div>
+        </div>
+        <a href="#" class="btn">查看详情</a>
+      </div>
+      <div class="schedule-row">
+        <div class="schedule-time">12.25</div>
+        <div>
+          <div class="schedule-title">AI Short Film Competition</div>
+          <div class="schedule-desc">竞赛单元第一场，入围短片连续展映</div>
+        </div>
+        <a href="#" class="btn">查看详情</a>
+      </div>
+      <div class="schedule-row">
+        <div class="schedule-time">12.26</div>
+        <div>
+          <div class="schedule-title">Forum: AI and Cinema</div>
+          <div class="schedule-desc">导演、技术专家与学者共同讨论 AI 电影的现在与未来</div>
+        </div>
+        <a href="#" class="btn">查看详情</a>
+      </div>
+      <div class="schedule-row">
+        <div class="schedule-time">12.27</div>
+        <div>
+          <div class="schedule-title">Workshop: Generative Storytelling</div>
+          <div class="schedule-desc">生成式叙事工作坊，从脚本到视觉概念的实践训练</div>
+        </div>
+        <a href="#" class="btn">查看详情</a>
+      </div>
+      <div class="schedule-row">
+        <div class="schedule-time">12.28</div>
+        <div>
+          <div class="schedule-title">Awards Ceremony</div>
+          <div class="schedule-desc">颁奖夜，公布最佳 AI 短片、最佳实验影像与观众选择奖</div>
+        </div>
+        <a href="#" class="btn btn-primary">查看详情</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Submit -->
+  <section class="section" id="submit">
+    <span class="section-label">Submit</span>
+    <h2 class="section-title">提交你的作品</h2>
+    <p class="section-text">我们接受 AI 短片、实验影像、生成式电影项目与动态视觉作品。请确保作品为原创，并在提交中说明 AI 使用方式。</p>
+
+    <div class="grid grid-3">
+      <div class="card">
+        <h3>作品要求</h3>
+        <p>时长建议 15 分钟以内；格式支持 MP4、MOV；画面比例不限；鼓励中英文字幕版本。</p>
+      </div>
+      <div class="card">
+        <h3>AI 说明</h3>
+        <p>请在提交时说明 AI 在脚本、画面、声音、剪辑或视觉生成中的具体使用方式。</p>
+      </div>
+      <div class="card">
+        <h3>评审标准</h3>
+        <p>评审将关注创意概念、影像语言、叙事完成度、AI 协作深度与作品整体审美表达。</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 60px;">
+      <a href="#" class="btn btn-primary">进入投稿系统</a>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="contact">
+    <h2>Join the Next Moonlit Wave</h2>
+    <p>无论你是导演、开发者、艺术家还是电影爱好者，Lunar AI Film Festival 都邀请你参与这场关于影像未来的实验。</p>
+    <a href="#" class="btn btn-primary">联系我们</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-brand">LUNAR AI FILM FESTIVAL</div>
+    <ul class="footer-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#program">Program</a></li>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#submit">Submit</a></li>
+    </ul>
+    <div class="copyright">© 2026 Lunar AI Film Festival. All rights reserved.</div>
+  </footer>
+
+  <script>
+    // Header scroll effect
+    const header = document.getElementById('siteHeader');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 60) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Smooth reveal on scroll
+    const revealElements = document.querySelectorAll('.card, .film-card, .schedule-row');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealElements.forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(24px)';
+      el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>
